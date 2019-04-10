@@ -5,7 +5,11 @@ run ss&amp;kcp&amp;tor on openwrt, provide a transparent proxy for pc/phone
 - tor-router-nexx-wt3020 https://github.com/enovella/tor-router-nexx-wt3020
 - openwrt-ss-kcp https://github.com/boxhg/openwrt-ss-kcp
 
-# Port list
+# Openwrt network interface and port service
+
+Wan: 10.0.0.1
+Lan: 192.168.0.1
+
 - kcptun-client : 12345, (tcp tunnel for ss)
 - ss-local : 1080, (Socks5 Proxy for tor)
 - Tor-SocksPort: 9050  (Socks5 Proxy for tor)
@@ -35,6 +39,7 @@ See here:
   opkg install tor-geoip
 ```
 ### 3.Setup Tor Configuration: /etc/tor/torrc
+
 ```
 User tor
 VirtualAddrNetwork 10.192.0.0/10
@@ -42,13 +47,13 @@ AutomapHostsSuffixes .onion,.exit
 AutomapHostsOnResolve 1
 
 SocksPort 127.0.0.1:9050
-SocksPort 192.168.22.1:9050
+SocksPort 192.168.0.1:9050
 
-TransPort 192.168.22.1:9040 IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
+TransPort 192.168.0.1:9040 IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
 TransPort 127.0.0.1:9040 IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
 
 DNSPort 127.0.0.1:9053
-DNSPort 192.168.22.1:9053
+DNSPort 192.168.0.1:9053
 
 # GeoIP for stats
 GeoIPFile /usr/share/tor/geoip
