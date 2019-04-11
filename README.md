@@ -113,9 +113,7 @@ enter Network－DHCP/DNS:
 
     Ignore resolve file: checked
 
-
-### 6.FAQ
-1. app service start order
+###  6. app service start order
 ```
   service kcptun start
   service shadowsocks start
@@ -123,6 +121,19 @@ enter Network－DHCP/DNS:
  
   service firewall start
 ```
+### 7.FAQ
+1.if Openwrt's local time not sync, there is the warning message
+
+```
+....
+[warn] Problem bootstrapping. Stuck at 25%: Loading networkstatus consensus. (Clock skew -57934 in directory from DIRSERV; CLOCK_SKEW; count 5; recommendation warn; host ?
+....
+```
+
+fix:  
+- enter openwrt's admin web, open System->System, 
+- click "Sync with browser" to sync Local Time
+- restart tor:  service tor restart
 
 2. if tor not working, check the logs
 ```
