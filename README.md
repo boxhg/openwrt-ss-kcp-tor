@@ -7,8 +7,8 @@ run ss&amp;kcp&amp;tor on openwrt, provide a transparent proxy for pc/phone
 
 # Openwrt network interface and port service
 
-Wan: 10.0.0.1
-Lan: 192.168.0.1
+*Wan*: 10.0.0.1    *Lan*: 192.168.0.1
+
 
 - kcptun-client : 12345, (tcp tunnel for ss)
 - ss-local : 1080, (Socks5 Proxy for tor)
@@ -41,6 +41,12 @@ See here:
 ### 3.Setup Tor Configuration: /etc/tor/torrc
 
 ```
+Log notice file /var/log/tor/notices.log
+Log notice syslog
+Log debug stderr
+
+DataDirectory /var/lib/tor
+
 User tor
 VirtualAddrNetwork 10.192.0.0/10
 AutomapHostsSuffixes .onion,.exit
@@ -106,3 +112,26 @@ enter Network－DHCP/DNS:
 >Resolv and Hosts Files:(Must checked)
 
     Ignore resolve file: checked
+
+
+### 6.FAQ
+1. app service start order
+```
+  service kcptun start
+  service shadowsocks start
+  service tor start
+ 
+  service firewall start
+```
+
+2. if tor not working, check the logs
+```
+   /var/log/kcptun/client.general.log
+   /var/log/tor/notices.log
+```
+  - start kcptun&ss first, check localhost:1080 is working
+  - start tor, check debug&notice log
+  
+3. if tor transparent proxy not working, check...
+  - check firewall's iptables rules, and retart firewall
+  - check DNS's config, set DNS's forward to localhost#9053
